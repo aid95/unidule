@@ -7,22 +7,27 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateCourseRequestDto } from './dtos/create-course.request.dto';
-import { CoursesService } from './courses.service';
-import { GetCoursesRequestDto } from './dtos/get-courses.request.dto';
-import { UpdateCourseRequestDto } from './dtos/update-course.request.dto';
+import {
+  CreateCourseRequestDTO,
+  CreateCourseResponseDTO,
+} from '../dtos/course/create-course.dto';
+import { CoursesService } from '../service/courses.service';
+import { GetCourseRequestDTO } from '../dtos/course/get-courses.dto';
+import { UpdateCourseRequestDto } from '../dtos/course/update-course.request.dto';
 
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Get('/')
-  async courses(@Body() { offset, limit }: GetCoursesRequestDto) {
+  async courses(@Body() { offset, limit }: GetCourseRequestDTO) {
     return { courses: await this.coursesService.getCourses(offset, limit) };
   }
 
   @Post('/')
-  createCourse(@Body() req: CreateCourseRequestDto) {
+  async createCourse(
+    @Body() req: CreateCourseRequestDTO,
+  ): Promise<CreateCourseResponseDTO> {
     return this.coursesService.newCourses(req);
   }
 

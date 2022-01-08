@@ -20,8 +20,8 @@ describe('강의 정보 (e2e)', () => {
   });
 
   describe('등록', () => {
-    it('성공', () => {
-      return request(app.getHttpServer())
+    it('성공', async () => {
+      const res = await request(app.getHttpServer())
         .post('/courses')
         .set('Content-Type', 'application/json; charset=utf-8')
         .send({
@@ -30,8 +30,9 @@ describe('강의 정보 (e2e)', () => {
           weekday: 'WED',
           start: '2019-11-13T00:47:06.943Z',
           end: '2019-11-13T00:47:06.943Z',
-        })
-        .expect(201);
+        });
+      expect(res.statusCode).toBe(201);
+      expect(res.body.id).toBe(1);
     });
   });
 

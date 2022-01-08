@@ -7,9 +7,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ScheduleBoardService } from './schedule-board.service';
-import { CreateScheduleBoardRequestDto } from './dtos/create-schedule-board.request.dto';
-import { UpdateScheduleBoardRequestDto } from './dtos/update-schedule-board.request.dto';
+import { ScheduleBoardService } from '../service/schedule-board.service';
+import { CreateScheduleBoardRequestDto } from '../dtos/schedule-board/create-schedule-board.request.dto';
+import { UpdateScheduleBoardRequestDto } from '../dtos/schedule-board/update-schedule-board.request.dto';
 
 @Controller('schedules')
 export class ScheduleBoardController {
