@@ -4,13 +4,17 @@ import {
   CreateCourseRequestDTO,
   CreateCourseResponseDTO,
 } from '../dtos/course/create-course.dto';
-import { UpdateCourseRequestDto } from '../dtos/course/update-course.request.dto';
+import { UpdateCourseRequestDTO } from '../dtos/course/update-course.request.dto';
 import { CourseDatabasePort } from '../entities/course/course.database.port';
+import { CourseItem } from '../dtos/course/get-courses.dto';
+import { Page, PaginationDTO } from '../../../common/dtos/pagination.dto';
+import { ScheduleInjectToken } from '../interface/schedule.inject-token';
 
 @Injectable()
 export class CoursesService {
   constructor(
-    @Inject('CoursesRepository') private readonly repo: CourseDatabasePort,
+    @Inject(ScheduleInjectToken.repositories.CoursesRepository)
+    private readonly repo: CourseDatabasePort,
   ) {}
 
   async newCourses(req: CreateCourseRequestDTO) {
@@ -18,8 +22,21 @@ export class CoursesService {
     return new CreateCourseResponseDTO(newCourse.id);
   }
 
-  getCourses(offset: number, limit: number) {
-    return this.repo.pagination(offset, limit);
+  async getCourses(offset: number, limit: number) {
+    const [courses, total] = await this.repo.pagination(offset, limit);
+    return new PaginationDTO<CourseItem>(
+      courses.map((course) => {
+        const props = course.copy();
+        return new CourseItem(
+          props.courseId,
+          props.title,
+          props.start,
+          props.end,
+          props.weekday,
+        );
+      }),
+      new Page(total, Math.abs(offset - limit)),
+    );
   }
 
   async deleteCourse(id: number) {
@@ -28,7 +45,7 @@ export class CoursesService {
     return this.repo.save(target);
   }
 
-  async updateCourse(req: UpdateCourseRequestDto) {
+  async updateCourse(req: UpdateCourseRequestDTO) {
     const target = await this.repo.findById(1);
     target.update(req);
     return this.repo.save(target);

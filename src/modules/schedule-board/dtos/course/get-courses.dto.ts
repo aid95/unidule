@@ -1,6 +1,6 @@
 import { IsNumber } from 'class-validator';
 
-export class GetCourseRequestDTO {
+export class GetCoursesRequestDTO {
   @IsNumber()
   offset: number;
 
@@ -8,10 +8,24 @@ export class GetCourseRequestDTO {
   limit: number;
 }
 
-export class GetCourseResponseDTO {
-  id: number;
+export class CourseItem {
+  courseId: string;
+  end: Date;
+  start: Date;
+  title: string;
+  weekday: string;
 
-  constructor(id: number) {
-    this.id = id;
+  constructor(
+    courseId: string,
+    title: string,
+    end: Date,
+    start: Date,
+    weekday: string,
+  ) {
+    this.courseId = courseId;
+    this.end = end;
+    this.start = start;
+    this.title = title;
+    this.weekday = weekday;
   }
 }

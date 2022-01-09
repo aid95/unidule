@@ -1,4 +1,4 @@
-export class UpdateCourseRequestDto {
+export class UpdateCourseRequestDTO {
   title?: string;
   weekday: string;
   start?: Date;

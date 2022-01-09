@@ -1,4 +1,4 @@
-import { IsDate, IsString } from 'class-validator';
+import { IsDateString, IsString } from 'class-validator';
 
 export class CreateCourseRequestDTO {
   @IsString()
@@ -10,10 +10,10 @@ export class CreateCourseRequestDTO {
   @IsString()
   readonly weekday: string;
 
-  @IsDate()
+  @IsDateString()
   readonly start: Date;
 
-  @IsDate()
+  @IsDateString()
   readonly end: Date;
 }
 

@@ -17,16 +17,16 @@ export class CourseTypeorm implements CourseDatabasePort {
       .getOne();
   }
 
-  save(entity: CourseEntity): Promise<CourseEntity> {
+  async save(entity: CourseEntity): Promise<CourseEntity> {
     return this.repo.save(entity);
   }
 
-  pagination(skip: number, take: number): Promise<CourseEntity[]> {
+  pagination(skip: number, take: number): Promise<[CourseEntity[], number]> {
     return this.repo
       .createQueryBuilder('c')
       .where('c.deleted_at IS NULL')
       .skip(skip)
       .take(take)
-      .getMany();
+      .getManyAndCount();
   }
 }

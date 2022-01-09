@@ -7,6 +7,7 @@ import { CourseEntity } from './entities/course/course.entity';
 import { CoursesService } from './service/courses.service';
 import { ScheduleBoardEntity } from './entities/schedule-board.entity';
 import { CourseTypeorm } from './database/course.typeorm';
+import { ScheduleInjectToken } from './interface/schedule.inject-token';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CourseEntity, ScheduleBoardEntity])],
@@ -14,7 +15,10 @@ import { CourseTypeorm } from './database/course.typeorm';
   providers: [
     ScheduleBoardService,
     CoursesService,
-    { provide: 'CoursesRepository', useClass: CourseTypeorm },
+    {
+      provide: ScheduleInjectToken.repositories.CoursesRepository,
+      useClass: CourseTypeorm,
+    },
   ],
 })
 export class ScheduleBoardModule {}

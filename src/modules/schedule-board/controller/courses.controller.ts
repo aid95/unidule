@@ -12,16 +12,22 @@ import {
   CreateCourseResponseDTO,
 } from '../dtos/course/create-course.dto';
 import { CoursesService } from '../service/courses.service';
-import { GetCourseRequestDTO } from '../dtos/course/get-courses.dto';
-import { UpdateCourseRequestDto } from '../dtos/course/update-course.request.dto';
+import {
+  CourseItem,
+  GetCoursesRequestDTO,
+} from '../dtos/course/get-courses.dto';
+import { UpdateCourseRequestDTO } from '../dtos/course/update-course.request.dto';
+import { PaginationDTO } from '../../../common/dtos/pagination.dto';
 
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Get('/')
-  async courses(@Body() { offset, limit }: GetCourseRequestDTO) {
-    return { courses: await this.coursesService.getCourses(offset, limit) };
+  async courses(
+    @Body() { offset, limit }: GetCoursesRequestDTO,
+  ): Promise<PaginationDTO<CourseItem>> {
+    return this.coursesService.getCourses(offset, limit);
   }
 
   @Post('/')
@@ -37,7 +43,7 @@ export class CoursesController {
   }
 
   @Put('/')
-  updateCourse(@Body() req: UpdateCourseRequestDto) {
+  updateCourse(@Body() req: UpdateCourseRequestDTO) {
     return this.coursesService.updateCourse(req);
   }
 }

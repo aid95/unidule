@@ -1,13 +1,11 @@
 import {
   CreateDateColumn,
   DeleteDateColumn,
-  Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
-export abstract class BaseEntity {
+export class BaseEntity {
   @PrimaryGeneratedColumn({ name: 'id' })
   readonly id: number;
 
