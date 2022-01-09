@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../../../common/base/base.entity';
 import { BadRequestException } from '@nestjs/common';
+import { ScheduleBoardEntity } from '../schedule-board.entity';
 
 export type CourseEssentialProperties = Required<{
   readonly courseId: string;
@@ -17,32 +18,29 @@ export type CourseProperties = CourseEssentialProperties;
 @Entity('courses')
 export class CourseEntity extends BaseEntity {
   @Column({ name: 'course_id', unique: true })
-  private courseId: string;
+  courseId: string;
 
   @Column({ name: 'end_date' })
-  private end: Date;
+  end: Date;
 
   @Column({ name: 'start_date' })
-  private start: Date;
+  start: Date;
 
   @Column({ name: 'title' })
-  private title: string;
+  title: string;
 
   @Column({ name: 'weekday' })
-  private weekday: string;
+  weekday: string;
+
+  @ManyToOne(
+    (type) => ScheduleBoardEntity,
+    (scheduleBoard) => scheduleBoard.courses,
+    { onDelete: 'CASCADE', createForeignKeyConstraints: false },
+  )
+  scheduleBoard: ScheduleBoardEntity;
 
   private constructor() {
     super();
-  }
-
-  copy(): CourseProperties {
-    return {
-      courseId: this.courseId,
-      title: this.title,
-      weekday: this.weekday,
-      start: this.start,
-      end: this.end,
-    };
   }
 
   static create(props: CourseEssentialProperties) {
@@ -58,11 +56,11 @@ export class CourseEntity extends BaseEntity {
   }
 
   private static validate(props: CourseEssentialProperties) {
-    const checkRange = (s: Date, e: Date) => s < e;
+    const checkCoursesDuration = (s: Date, e: Date) => s < e;
     const checkCourseIdFormat = (courseId: string) =>
       courseId.match(/^([0-9a-zA-Z]{4,5})-([0-9]{2})$/);
 
-    if (!checkRange(props.start, props.end)) {
+    if (!checkCoursesDuration(props.start, props.end)) {
       throw new BadRequestException(
         '수업 시작 시간은 종료 시간보다 같거나 빠를 수 없습니다.',
       );

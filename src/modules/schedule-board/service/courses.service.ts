@@ -26,13 +26,12 @@ export class CoursesService {
     const [courses, total] = await this.repo.pagination(offset, limit);
     return new PaginationDTO<CourseItem>(
       courses.map((course) => {
-        const props = course.copy();
         return new CourseItem(
-          props.courseId,
-          props.title,
-          props.start,
-          props.end,
-          props.weekday,
+          course.courseId,
+          course.title,
+          course.start,
+          course.end,
+          course.weekday,
         );
       }),
       new Page(total, Math.abs(offset - limit)),
