@@ -58,10 +58,18 @@ export class CourseEntity extends BaseEntity {
   }
 
   private static validate(props: CourseEssentialProperties) {
-    if (props.end <= props.start) {
+    const checkRange = (s: Date, e: Date) => s < e;
+    const checkCourseIdFormat = (courseId: string) =>
+      courseId.match(/^([0-9a-zA-Z]{4,5})-([0-9]{2})$/);
+
+    if (!checkRange(props.start, props.end)) {
       throw new BadRequestException(
         '수업 시작 시간은 종료 시간보다 같거나 빠를 수 없습니다.',
       );
+    }
+
+    if (!checkCourseIdFormat(props.courseId)) {
+      throw new BadRequestException('강의 ID 형식이 틀립니다.');
     }
   }
 
