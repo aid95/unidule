@@ -13,6 +13,7 @@ import { DurationEntity } from '../entities/common/duration.entity';
 import { Title } from '../entities/vo/title.vo';
 import { CourseId } from '../entities/vo/course-id.vo';
 import { Weekday } from '../entities/vo/weekday.vo';
+import { IdResponse } from '../../../common/dtos/id.response.dto';
 
 @Injectable()
 export class CoursesService {
@@ -40,8 +41,9 @@ export class CoursesService {
         return new CourseItem(
           course.courseId.value,
           course.title.value,
-          course.duration, // TODO
           course.weekday.value,
+          course.duration.start,
+          course.duration.end,
         );
       }),
       new Page(total, Math.abs(offset - limit)),
@@ -51,12 +53,12 @@ export class CoursesService {
   async deleteCourse(id: number) {
     const target = await this.repo.findById(id);
     target.delete();
-    return this.repo.save(target);
+    return new IdResponse<number>((await this.repo.save(target)).id);
   }
 
   async updateCourse(req: UpdateCourseRequestDTO) {
     const target = await this.repo.findById(1);
     // target.update(req);
-    return this.repo.save(target);
+    return new IdResponse((await this.repo.save(target)).id);
   }
 }

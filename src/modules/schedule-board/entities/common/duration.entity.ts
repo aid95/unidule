@@ -1,6 +1,7 @@
-import { Column } from 'typeorm';
+import { Column, Index } from 'typeorm';
 import { BadRequestException } from '@nestjs/common';
 
+@Index('ix_duration', ['start', 'end'])
 export class DurationEntity {
   @Column({ name: 'start', type: 'timestamp' })
   start: Date;

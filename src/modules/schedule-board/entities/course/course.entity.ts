@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, ManyToOne } from 'typeorm';
 import { BaseColumn } from '../../../../common/base/base-column.entity';
 import { ScheduleBoardEntity } from '../schedule-boarad/schedule-board.entity';
 import { DurationEntity } from '../common/duration.entity';
@@ -22,9 +22,9 @@ export class CourseEntity extends BaseColumn {
   @Column({
     name: 'course_id',
     type: 'varchar',
-    unique: true,
     transformer: courseIdTransformer,
   })
+  @Index({ unique: true })
   courseId: CourseId;
 
   @Column((type) => DurationEntity, { prefix: false })
