@@ -1,4 +1,5 @@
 import { IsNumber } from 'class-validator';
+import { DurationEntity } from '../../entities/common/duration.entity';
 
 export class GetCoursesRequestDTO {
   @IsNumber()
@@ -10,21 +11,18 @@ export class GetCoursesRequestDTO {
 
 export class CourseItem {
   courseId: string;
-  end: Date;
-  start: Date;
   title: string;
+  duration: DurationEntity;
   weekday: string;
 
   constructor(
     courseId: string,
     title: string,
-    end: Date,
-    start: Date,
+    duration: DurationEntity,
     weekday: string,
   ) {
     this.courseId = courseId;
-    this.end = end;
-    this.start = start;
+    this.duration = duration;
     this.title = title;
     this.weekday = weekday;
   }

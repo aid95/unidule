@@ -9,6 +9,10 @@ import { CourseDatabasePort } from '../entities/course/course.database.port';
 import { CourseItem } from '../dtos/course/get-courses.dto';
 import { Page, PaginationDTO } from '../../../common/dtos/pagination.dto';
 import { ScheduleInjectToken } from '../interface/schedule.inject-token';
+import { DurationEntity } from '../entities/common/duration.entity';
+import { Title } from '../entities/vo/title.vo';
+import { CourseId } from '../entities/vo/course-id.vo';
+import { Weekday } from '../entities/vo/weekday.vo';
 
 @Injectable()
 export class CoursesService {
@@ -18,7 +22,14 @@ export class CoursesService {
   ) {}
 
   async newCourses(req: CreateCourseRequestDTO) {
-    const newCourse = await this.repo.save(CourseEntity.create(req));
+    const newCourse = await this.repo.save(
+      CourseEntity.create({
+        courseId: new CourseId(req.courseId),
+        title: new Title(req.title),
+        weekday: new Weekday(req.weekday),
+        duration: new DurationEntity(req.start, req.end),
+      }),
+    );
     return new CreateCourseResponseDTO(newCourse.id);
   }
 
@@ -27,11 +38,10 @@ export class CoursesService {
     return new PaginationDTO<CourseItem>(
       courses.map((course) => {
         return new CourseItem(
-          course.courseId,
-          course.title,
-          course.start,
-          course.end,
-          course.weekday,
+          course.courseId.value,
+          course.title.value,
+          course.duration, // TODO
+          course.weekday.value,
         );
       }),
       new Page(total, Math.abs(offset - limit)),
@@ -46,7 +56,7 @@ export class CoursesService {
 
   async updateCourse(req: UpdateCourseRequestDTO) {
     const target = await this.repo.findById(1);
-    target.update(req);
+    // target.update(req);
     return this.repo.save(target);
   }
 }

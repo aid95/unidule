@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ScheduleBoardEntity } from '../entities/schedule-board.entity';
+import { ScheduleBoardEntity } from '../entities/schedule-boarad/schedule-board.entity';
 import { Repository } from 'typeorm';
 import { UpdateScheduleBoardRequestDto } from '../dtos/schedule-board/update-schedule-board.request.dto';
 

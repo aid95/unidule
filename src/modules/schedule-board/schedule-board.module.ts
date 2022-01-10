@@ -5,7 +5,7 @@ import { CoursesController } from './controller/courses.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CourseEntity } from './entities/course/course.entity';
 import { CoursesService } from './service/courses.service';
-import { ScheduleBoardEntity } from './entities/schedule-board.entity';
+import { ScheduleBoardEntity } from './entities/schedule-boarad/schedule-board.entity';
 import { CourseTypeorm } from './database/course.typeorm';
 import { ScheduleInjectToken } from './interface/schedule.inject-token';
 
