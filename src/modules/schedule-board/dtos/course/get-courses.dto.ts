@@ -1,13 +1,3 @@
-import { IsNumber } from 'class-validator';
-
-export class GetCoursesRequestDTO {
-  @IsNumber()
-  offset: number;
-
-  @IsNumber()
-  limit: number;
-}
-
 export class CourseItem {
   courseId: string;
   title: string;

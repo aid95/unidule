@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 
 export class Title {
-  value: string;
+  readonly value: string;
 
   constructor(value: string) {
     if (value.length == 0) {

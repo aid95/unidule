@@ -7,17 +7,15 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import {
-  CreateCourseRequestDTO,
-  CreateCourseResponseDTO,
-} from '../dtos/course/create-course.dto';
+import { CreateCourseRequestDTO } from '../dtos/course/create-course.dto';
 import { CoursesService } from '../service/courses.service';
-import {
-  CourseItem,
-  GetCoursesRequestDTO,
-} from '../dtos/course/get-courses.dto';
+import { CourseItem } from '../dtos/course/get-courses.dto';
 import { UpdateCourseRequestDTO } from '../dtos/course/update-course.request.dto';
-import { PaginationDTO } from '../../../common/dtos/pagination.dto';
+import {
+  PaginationRequestDTO,
+  PaginationResponseDTO,
+} from '../../../common/dtos/pagination.dto';
+import { IdResponse } from '../../../common/dtos/id.response.dto';
 
 @Controller('courses')
 export class CoursesController {
@@ -25,25 +23,27 @@ export class CoursesController {
 
   @Get('/')
   async courses(
-    @Body() { offset, limit }: GetCoursesRequestDTO,
-  ): Promise<PaginationDTO<CourseItem>> {
+    @Body() { offset, limit }: PaginationRequestDTO,
+  ): Promise<PaginationResponseDTO<CourseItem>> {
     return this.coursesService.getCourses(offset, limit);
   }
 
   @Post('/')
   async createCourse(
     @Body() req: CreateCourseRequestDTO,
-  ): Promise<CreateCourseResponseDTO> {
+  ): Promise<IdResponse<number>> {
     return this.coursesService.newCourses(req);
   }
 
   @Delete('/:id')
-  deleteCourse(@Param() id: number) {
+  deleteCourse(@Param() id: number): Promise<IdResponse<number>> {
     return this.coursesService.deleteCourse(id);
   }
 
   @Put('/')
-  updateCourse(@Body() req: UpdateCourseRequestDTO) {
+  updateCourse(
+    @Body() req: UpdateCourseRequestDTO,
+  ): Promise<IdResponse<number>> {
     return this.coursesService.updateCourse(req);
   }
 }

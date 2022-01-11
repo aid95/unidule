@@ -1,4 +1,14 @@
-export class PaginationDTO<T> {
+import { IsNumber } from 'class-validator';
+
+export class PaginationRequestDTO {
+  @IsNumber()
+  offset: number;
+
+  @IsNumber()
+  limit: number;
+}
+
+export class PaginationResponseDTO<T> {
   items: T[];
   page: Page;
 

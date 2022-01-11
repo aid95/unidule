@@ -18,7 +18,7 @@ export abstract class BaseColumn {
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
   private deletedAt?: Date;
 
-  delete() {
+  markDeleted() {
     this.deletedAt = new Date();
   }
 }

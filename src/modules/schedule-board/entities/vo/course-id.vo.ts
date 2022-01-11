@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 
 export class CourseId {
-  value: string;
+  readonly value: string;
 
   constructor(value: string) {
     if (!CourseId.validate(value)) {

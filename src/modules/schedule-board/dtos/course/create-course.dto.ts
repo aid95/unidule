@@ -16,11 +16,3 @@ export class CreateCourseRequestDTO {
   @IsDateString()
   readonly end: Date;
 }
-
-export class CreateCourseResponseDTO {
-  readonly id: number;
-
-  constructor(id: number) {
-    this.id = id;
-  }
-}

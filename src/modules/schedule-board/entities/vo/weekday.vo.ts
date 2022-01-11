@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 
 export class Weekday {
   static readonly weekday = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-  value: string;
+  readonly value: string;
 
   constructor(value: string) {
     if (!Weekday.weekday.includes(value)) {
