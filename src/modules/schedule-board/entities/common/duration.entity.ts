@@ -1,5 +1,9 @@
 import { Column, Index } from 'typeorm';
-import { BadRequestException } from '@nestjs/common';
+
+export type DurationEssentialProperties = {
+  start: Date;
+  end: Date;
+};
 
 @Index('ix_duration', ['start', 'end'])
 export class DurationEntity {
@@ -9,13 +13,10 @@ export class DurationEntity {
   @Column({ name: 'end', type: 'timestamp' })
   end: Date;
 
-  constructor(start: Date, end: Date) {
-    if (end <= start) {
-      throw new BadRequestException(
-        '시작 시간이 종료 시간보다 같거나 늦을 수 없습니다.',
-      );
-    }
-    this.start = start;
-    this.end = end;
+  static create(props: DurationEssentialProperties): DurationEntity {
+    const result = new DurationEntity();
+    result.start = props.start;
+    result.end = props.end;
+    return result;
   }
 }

@@ -2,14 +2,11 @@ import { Column, Entity, Index, ManyToOne } from 'typeorm';
 import { BaseColumn } from '../../../../common/base/base-column.entity';
 import { ScheduleBoardEntity } from '../schedule-boarad/schedule-board.entity';
 import { DurationEntity } from '../common/duration.entity';
-import { Title, titleTransformer } from '../vo/title.vo';
-import { CourseId, courseIdTransformer } from '../vo/course-id.vo';
-import { Weekday, weekDayTransformer } from '../vo/weekday.vo';
 
 export type CourseEssentialProperties = Required<{
-  readonly courseId: CourseId;
-  readonly title: Title;
-  readonly weekday: Weekday; // TODO: enum으로 교체
+  readonly courseId: string;
+  readonly title: string;
+  readonly weekday: string; // TODO: enum으로 교체
   readonly duration: DurationEntity;
 }>;
 
@@ -21,20 +18,18 @@ export type CourseProperties = CourseEssentialProperties;
 export class CourseEntity extends BaseColumn {
   @Column({
     name: 'course_id',
-    type: 'varchar',
-    transformer: courseIdTransformer,
   })
   @Index({ unique: true })
-  courseId: CourseId;
+  courseId: string;
 
   @Column((type) => DurationEntity, { prefix: false })
   duration: DurationEntity;
 
-  @Column({ name: 'title', type: 'varchar', transformer: titleTransformer })
-  title: Title;
+  @Column({ name: 'title' })
+  title: string;
 
-  @Column({ name: 'weekday', type: 'varchar', transformer: weekDayTransformer })
-  weekday: Weekday;
+  @Column({ name: 'weekday' })
+  weekday: string;
 
   @ManyToOne(
     (type) => ScheduleBoardEntity,

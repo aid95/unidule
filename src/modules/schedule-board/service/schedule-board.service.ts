@@ -28,30 +28,14 @@ export class ScheduleBoardService {
       schedule.courses.map(
         (course) =>
           new CourseItem(
-            course.courseId.value,
-            course.title.value,
-            course.weekday.value,
+            course.courseId,
+            course.title,
+            course.weekday,
             course.duration.start,
             course.duration.end,
           ),
       ),
     );
-
-    /*
-    return new GetScheduleBoardDTO(
-      scheduleBoardEntity.title.value,
-      scheduleBoardEntity.courses.map(
-        (course) =>
-          new CourseItem(
-            course.courseId.value,
-            course.title.value,
-            course.weekday.value,
-            course.duration.start,
-            course.duration.end,
-          ),
-      ),
-    );
-     */
   }
 
   async updateScheduleBoard({

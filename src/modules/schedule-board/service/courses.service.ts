@@ -10,9 +10,6 @@ import {
 } from '../../../common/dtos/pagination.dto';
 import { ScheduleInjectToken } from '../interface/schedule.inject-token';
 import { DurationEntity } from '../entities/common/duration.entity';
-import { Title } from '../entities/vo/title.vo';
-import { CourseId } from '../entities/vo/course-id.vo';
-import { Weekday } from '../entities/vo/weekday.vo';
 import { IdResponse } from '../../../common/dtos/id.response.dto';
 
 @Injectable()
@@ -25,10 +22,10 @@ export class CoursesService {
   async newCourses(req: CreateCourseRequestDTO): Promise<IdResponse<number>> {
     const newCourse = await this.repo.save(
       CourseEntity.create({
-        courseId: new CourseId(req.courseId),
-        title: new Title(req.title),
-        weekday: new Weekday(req.weekday),
-        duration: new DurationEntity(req.start, req.end),
+        courseId: req.courseId,
+        title: req.title,
+        weekday: req.weekday,
+        duration: DurationEntity.create({ start: req.start, end: req.end }),
       }),
     );
     return new IdResponse(newCourse.id);
@@ -39,14 +36,14 @@ export class CoursesService {
     return new PaginationResponseDTO<CourseItem>(
       courses.map((course) => {
         return new CourseItem(
-          course.courseId.value,
-          course.title.value,
-          course.weekday.value,
+          course.courseId,
+          course.title,
+          course.weekday,
           course.duration.start,
           course.duration.end,
         );
       }),
-      new Page(total, Math.abs(offset - limit)),
+      new Page(total, offset, limit),
     );
   }
 

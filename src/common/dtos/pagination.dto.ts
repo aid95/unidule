@@ -23,9 +23,13 @@ export class Page {
   pageSize: number;
   totalPage: number;
 
-  constructor(totalCount: number, pageSize: number) {
+  constructor(totalCount: number, offset: number, limit: number) {
     this.totalCount = totalCount;
-    this.pageSize = pageSize;
-    this.totalPage = Math.ceil(totalCount / pageSize);
+    this.pageSize = Page.calcPageSize(offset, limit);
+    this.totalPage = Math.ceil(totalCount / this.pageSize);
+  }
+
+  private static calcPageSize(offset: number, limit: number) {
+    return Math.abs(offset - limit);
   }
 }
